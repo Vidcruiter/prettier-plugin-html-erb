@@ -24,11 +24,11 @@ export function print(path, options, print) {
   }
 
   if (node.type === "expression") {
-    return printExpression(node);
+    return printExpression(node, options);
   }
 
   if (node.type === "statement") {
-    return printStatement(node);
+    return printStatement(node, options);
   }
 
   if (node.type === "comment") {
@@ -187,26 +187,33 @@ export const findPlaceholders = (text) => {
   return res;
 };
 
-const printExpression = (node) => {
+const printExpression = (node, options) => {
   const multiline = node.content.includes("\n");
   const openingErb = "<%=" + node.delimiters.start;
   const closingErb = node.delimiters.end + "%>";
+  const indentationAmount = options.rubyNewLineBlock
+    ? node.delimiters.start.length + 2
+    : (openingErb + " ").length;
 
   if (multiline) {
     const lines = node.content.split("\n");
-    const templateIndicatorSpace = " ".repeat((openingErb + " ").length);
+    const templateIndicatorSpace = " ".repeat(indentationAmount);
 
     return builders.group(
       [
         node.preNewLines > 1 ? hardline : "",
         concat([
-          [openingErb, " "],
+          [openingErb, options.rubyNewLineBlock ? hardline : " "],
           ...lines.map((line, i) => [
-            i !== 0 ? templateIndicatorSpace : "",
+            options.rubyNewLineBlock
+              ? templateIndicatorSpace
+              : i !== 0
+                ? templateIndicatorSpace
+                : "",
             line,
             i !== lines.length - 1 ? hardline : "",
           ]),
-          [" ", closingErb],
+          [options.rubyNewLineBlock ? hardline : " ", closingErb],
         ]),
       ],
       { shouldBreak: node.preNewLines > 0 },
@@ -228,26 +235,33 @@ const printExpression = (node) => {
   );
 };
 
-const printStatement = (node) => {
+const printStatement = (node, options) => {
   const multiline = node.content.includes("\n");
   const openingErb = "<%" + node.delimiters.start;
   const closingErb = node.delimiters.end + "%>";
+  const indentationAmount = options.rubyNewLineBlock
+    ? node.delimiters.start.length + 2
+    : (openingErb + " ").length;
 
   if (multiline) {
     const lines = node.content.split("\n");
-    const templateIndicatorSpace = " ".repeat((openingErb + " ").length);
+    const templateIndicatorSpace = " ".repeat(indentationAmount);
 
     return builders.group(
       [
         node.preNewLines > 1 ? hardline : "",
         concat([
-          [openingErb, " "],
+          [openingErb, options.rubyNewLineBlock ? hardline : " "],
           ...lines.map((line, i) => [
-            i !== 0 ? templateIndicatorSpace : "",
+            options.rubyNewLineBlock
+              ? templateIndicatorSpace
+              : i !== 0
+                ? templateIndicatorSpace
+                : "",
             line,
             i !== lines.length - 1 ? hardline : "",
           ]),
-          [" ", closingErb],
+          [options.rubyNewLineBlock ? hardline : " ", closingErb],
         ]),
       ],
       { shouldBreak: node.preNewLines > 0 },
@@ -259,7 +273,9 @@ const printStatement = (node) => {
       node.preNewLines > 1 ? hardline : "",
       builders.join(" ", [openingErb, node.content, closingErb]),
     ],
-    { shouldBreak: node.preNewLines > 0 },
+    {
+      shouldBreak: node.preNewLines > 0,
+    },
   );
 
   if (

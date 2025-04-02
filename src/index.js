@@ -27,3 +27,12 @@ export const printers = {
     getVisitorKeys,
   }
 }
+
+export const options = {
+  rubyNewLineBlock: {
+    type: "boolean",
+    category: "Global",
+    default: false,
+    description: "Put the opening and closing erb tags for multi-line blocks on new lines",
+  },
+};
