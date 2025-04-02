@@ -40,7 +40,9 @@ npx prettier ./src/myfile.html.rb
 ```
 
 # Configuration
-This plugin doesn't have any special config. You can configure the ruby formatting using the options of [@prettier/plugin-ruby](https://github.com/prettier/plugin-ruby?tab=readme-ov-file#configuration).
+This plugin inherits all the ruby formatting configuration options of [@prettier/plugin-ruby](https://github.com/prettier/plugin-ruby?tab=readme-ov-file#configuration).
+
+Additionally, it allows you to set `rubyNewLineBlock` (defaults to false) to put the opening and closing erb tags for multi-line blocks on new lines. 
 
 # Roadmap
 There are a number of features I want to support:
