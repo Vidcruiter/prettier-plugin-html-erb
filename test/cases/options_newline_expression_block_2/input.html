@@ -1,0 +1,22 @@
+<div>
+<div>
+<div>
+<%= render(Feedback::Badge.new(class: "short-class")) %>
+<%= render Feedback::Badge.new(class: "short-class") %>
+
+<%= render(Feedback::Badge.new(class: "this-is-a-very-long-classname it-should-break-to-multiline", property: true, another_property: false)) %>
+
+<%=
+render(Feedback::Badge.new(            class: "this-is-a-very-long-classname it-should-keep-this-as-multiline",
+  property: true
+))
+%>
+
+<%= render Feedback::Badge.new(
+class: "mt-1 mb-2 this-is-a-loong_class",
+property: true
+)
+%>
+</div>
+</div>
+</div>
