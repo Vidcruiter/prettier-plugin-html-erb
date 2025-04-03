@@ -1,0 +1,28 @@
+<%=
+  items = []
+
+  resources.each_with_index do |resource, index|
+    active = false
+    active = true if @active_sidebar_nav == resource.id.to_s ||
+      (index.zero? && !@active_sidebar_nav)
+
+    items.push(
+      {
+        href:
+          edit_user_path(
+            @user,
+            active_user_tab: @active_user_tab,
+            active_sidebar_nav: resource.id
+          ),
+        name: resource.name,
+        active:
+      }
+    )
+  end
+
+  render Navigation::Menu::VerticalMenu.new(
+           id: "navigation--menu--vertical-menu_users",
+           items:,
+           use_turbo_frame_id: "user-resources"
+         )
+%>

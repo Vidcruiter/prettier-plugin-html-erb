@@ -36,3 +36,7 @@ export const options = {
     description: "Put the opening and closing erb tags for multi-line blocks on new lines",
   },
 };
+
+export const defaultOptions = {
+  trailingComma: "none"
+};
